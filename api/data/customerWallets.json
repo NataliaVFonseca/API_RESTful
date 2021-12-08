@@ -1,0 +1,48 @@
+{
+    "customerWallets": {
+      "data": [
+        {
+          "id": "a2s5d869ju",
+          "name": "João",
+          "parentId": "5da9ea6732123433432",
+          "birthDate": "1966-10-23T03:00:00Z",
+          "cellphone": "(32)(11111111)",
+          "phone": "(32)11111111",
+          "email": "email@email.com.br",
+          "occupation": "Medico",
+          "state": "SP",
+          "city": "Mogi das Cruzes",
+          "balance": 5465.00,
+          "createdAt": "2019-10-18T16:37:58.979Z"
+        },
+        {
+          "id": "a2s56th522",
+          "name": "Tata",
+          "parentId": "478354353654",
+          "birthDate": "1989-10-23T03:00:00Z",
+          "cellphone": "(32)(11111111)",
+          "phone": "(32)11111111",
+          "email": "email@email.com.br",
+          "occupation": "Analista de Sistemas",
+          "state": "SP",
+          "city": "Mogi das Cruzes",
+          "balance": 468.00,
+          "createdAt": "2019-10-18T16:37:58.979Z"
+        },
+        {
+          "id": "a1b2d1sa5f",
+          "name": "Tiazinho",
+          "parentId": "478354353654",
+          "birthDate": "1989-10-23T03:00:00Z",
+          "cellphone": "(32)(11111111)",
+          "phone": "(32)11111111",
+          "email": "email@email.com.br",
+          "occupation": "Engenheiro",
+          "state": "SP",
+          "city": "Suzano",
+          "balance": 784532.00,
+          "createdAt": "2019-10-18T16:37:58.979Z"
+        }
+      ]
+    }
+  }
