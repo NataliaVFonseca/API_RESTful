@@ -16,6 +16,11 @@ module.exports = app => {
         const createdAt = new Date();
         checkRequired(req.body);
 
+        // throw ("Teste" + JSON.stringify(customer)); 
+        let dataBase = customerWalletsDB.customerWallets.data;
+
+       checkEmailExists(email, dataBase);
+
         const customer = {
           "id": id,
           "name": name,
@@ -31,13 +36,41 @@ module.exports = app => {
           "createdAt": createdAt
             
         }
-        // throw ("Teste" + JSON.stringify(customer)); 
-        let dataBase = customerWalletsDB.customerWallets.data;
+        
         dataBase.push(customer);
+    
 
         res.status(201).json(dataBase);
     };
 
+    controller.editCustomerWallets = (req, res) => {
+
+        const {name, birthDate, cellphone, phone, email, occupation, state, city, balance} = req.body;
+        const id = generateUUID();
+        const parentId = generateUUID();
+        const createdAt = new Date();
+        
+       const customer = {
+        "id": id,
+        "name": name,
+        "parentId": parentId,
+        "birthDate": birthDate,
+        "cellphone": cellphone,
+        "phone": phone,
+        "email": email,
+        "occupation": occupation,
+        "state": state,
+        "city": city,
+        "balance": balance,
+        "createdAt": createdAt
+
+    }
+    let dataBase = customerWalletsDB.customerWallets.data;
+    editDB(dataBase, customer);
+    res.status(202).json(dataBase);
+
+}
+        
     return controller;
 
 }
@@ -65,4 +98,29 @@ function checkRequired(input){
         throw("Field city is required");
         
     }
+}
+
+function checkEmailExists(mail, db){
+    // db.push("a");
+    // throw("teste "+ JSON.stringify(db));
+
+   if( db.some(elem => elem.email === mail)){
+   
+        throw("This mail already exists!");
+    }
+
+}
+
+function editDB(db, customer){
+    let index = db.findIndex(elem => elem.email === customer.email)
+
+    if( index < 0){
+
+      throw("This mail no exists!");
+
+    }
+    else {
+         db[index] = customer;
+    }
+
 }

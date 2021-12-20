@@ -6,4 +6,6 @@ module.exports = (app) => {
     app.route('/api/v1/customer-wallets').get(controller.listCustomerWallets);
 
     app.route('/api/v1/customer-wallets').post(controller.createCustomerWallets);
+
+    app.route('/api/v1/customer-wallets').patch(controller.editCustomerWallets);
 }
