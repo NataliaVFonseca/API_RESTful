@@ -1,27 +1,29 @@
+const { json } = require("body-parser");
+const req = require("express/lib/request");
 
 //configurando o controller da rota
+const controller = {};
 
-const { json } = require("body-parser");
-
+// Importando a base de dados construída em um mock com base em um arquivo JSON
 module.exports = app => {
     const customerWalletsDB = app.data.customerWallets;
-    const controller = {};
 
+// API de consulta ao banco de dados dos clientes
     controller.listCustomerWallets = (req, res) => res.status(200).json(customerWalletsDB);
 
+// API de criação de clientes
     controller.createCustomerWallets = (req, res) => {
-        const {name, birthDate, cellphone, phone, email, occupation, state, city, balance} = req.body;
-        const id = generateUUID();
-        const parentId = generateUUID();
-        const createdAt = new Date();
-        checkRequired(req.body);
+        const {name, birthDate, cellphone, phone, email, occupation, state, city, balance} = req.body;  // Leitura dos dados de entrada
+        const id = generateUUID(); // geração de ID único
+        const parentId = generateUUID(); // geração de ID único
+        const createdAt = new Date(); // atualização da data de edição
+        checkRequired(req.body); // checar campos obrigatórios
 
-        // throw ("Teste" + JSON.stringify(customer)); 
-        let dataBase = customerWalletsDB.customerWallets.data;
+        let dataBase = customerWalletsDB.customerWallets.data; // leitura do banco de dados
 
-       checkEmailExists(email, dataBase);
+       checkEmailExists(email, dataBase); // verificação se o cliente já existe com base em seu email
 
-        const customer = {
+        const customer = { // criação do cliente na estrutura do banco de dados
           "id": id,
           "name": name,
           "parentId": parentId,
@@ -34,15 +36,14 @@ module.exports = app => {
           "city": city,
           "balance": balance,
           "createdAt": createdAt
-            
         }
         
-        dataBase.push(customer);
-    
+        dataBase.push(customer); // inserção do cliente criado no vetor de clientes
 
-        res.status(201).json(dataBase);
+        res.status(201).json(dataBase); // resposta da API com status de sucesso
     };
 
+//API de edição do cliente
     controller.editCustomerWallets = (req, res) => {
 
         const {name, birthDate, cellphone, phone, email, occupation, state, city, balance} = req.body;
@@ -68,13 +69,27 @@ module.exports = app => {
     let dataBase = customerWalletsDB.customerWallets.data;
     editDB(dataBase, customer);
     res.status(202).json(dataBase);
-
 }
-        
+
+// API de Exclusão de Clientes
+    controller.deleteCustomerWallets = (req,res) =>{
+        let email = req.body;
+
+        let costumer = email
+
+    let dataBase = customerWalletsDB.customerWallets.data;
+    deleteDB(dataBase,costumer);
+    res.status(203).json(dataBase);
+    };
+
+// API de contagem de clientes cadastrados
+
+    controller.contCustomerWallets = (req, res) => res.status(204).json(customerWalletsDB.length);
+
     return controller;
-
 }
 
+// Criação de Identificador Unico
 function generateUUID() { // Public Domain/MIT
     var d = new Date().getTime();//Timestamp
     var d2 = ((typeof performance !== 'undefined') && performance.now && (performance.now()*1000)) || 0;//Time in microseconds since page-load or 0 if unsupported
@@ -91,6 +106,7 @@ function generateUUID() { // Public Domain/MIT
     });
 }
 
+//Função para verificar o preenchimento de campos obrigatórios
 function checkRequired(input){
     // input = JSON.stringify(input);
     
@@ -100,6 +116,7 @@ function checkRequired(input){
     }
 }
 
+// Verificação de email existente
 function checkEmailExists(mail, db){
     // db.push("a");
     // throw("teste "+ JSON.stringify(db));
@@ -110,7 +127,7 @@ function checkEmailExists(mail, db){
     }
 
 }
-
+// Condição de edição
 function editDB(db, customer){
     let index = db.findIndex(elem => elem.email === customer.email)
 
@@ -122,5 +139,21 @@ function editDB(db, customer){
     else {
          db[index] = customer;
     }
+
+}
+
+function deleteDB(db, customer){
+    let index = db.findIndex(elem => elem.email === customer.email)
+
+    if( index < 0){
+
+    throw("This mail no exists!" + JSON.stringify(customer));
+
+    }
+    else {
+        //throw("teste")
+        db.splice(index, 1);
+    }
+
 
 }
